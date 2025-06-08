@@ -404,3 +404,11 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+package-lock.json
+npm-debug.log
+yarn-error.log
+pnpm-lock.yaml
+config.json
+test/
+.vscode/

@@ -1,0 +1,37 @@
+{
+  "name": "moowee-server",
+  "version": "1.0.0",
+  "description": "Backend services for MooWee",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "local": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/himanshu-v1/MooWee-Server.git"
+  },
+  "keywords": [
+    "Movies",
+    "Description",
+    "and",
+    "Critiques"
+  ],
+  "author": "Himanshu Sharma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/himanshu-v1/MooWee-Server/issues"
+  },
+  "homepage": "https://github.com/himanshu-v1/MooWee-Server#readme",
+  "dependencies": {
+    "axios": "^1.9.0",
+    "cheerio": "^1.0.0",
+    "express": "^5.1.0",
+    "mongodb": "^6.17.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
