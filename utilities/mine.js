@@ -15,7 +15,6 @@ const reform = ($, iden) => {
     const result = {};
     iden.forEach(element => {
         if(element === 'img'){
-            // console.log($('body').find(`img.mw-file-element`).attr('src'));
             const val = `http:${getElementVal($, element)}`;
             result.poster = val || '';
         } else {

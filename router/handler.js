@@ -12,7 +12,6 @@ routes.get('/', (req, res) => {
 });
 
 routes.get('/:id', async (req, res) => {
-    // console.log(req.params.id);
     const data = await getPage(config.src, req.params.id);
     const result = mine(data, ['img']);
     return res.send(result);
