@@ -14,19 +14,19 @@ const mine = (markup, iden) => {
 const reform = ($, iden) => {
     const result = {};
     iden.forEach(element => {
-        if(element === 'img'){
-            const val = `http:${getElementVal($, element)}`;
-            result.poster = val || '';
-        } else {
-            const val = getElementVal($, element);
-            switch (element) {
-                case "year":
-                    result[element] = parseInt(val.split('-')[0]);
-                    break;
-                default:
-                    result[element] = val;
-                    break;
-            }
+        const val = getElementVal($, element);
+        switch (element) {
+            case "poster": result[element] = `http:${val}` || '';
+                break;
+            case "year": result[element] = parseInt(val.split('-')[0]);
+                break;
+            case "rating": result[element] = `${val.split('/')[0].substr(-3)}\/10`;
+                break;
+            case "time": result[element] = parseInt(val.split(' minutes')[0]);
+                break;
+            default:
+                result[element] = val;
+                break;
         }
     });
     return result;
@@ -35,8 +35,14 @@ const reform = ($, iden) => {
 const getElementVal = ($, sel) => {
     const _$ = $('body');
     const selector = config.elems[sel];
-    const val = $(selector);
-    return sel === 'img' ? val.attr('src') : val.text();
+    let val = '';
+    switch (sel) {
+        case 'plot': val = $(selector[0]).nextUntil(selector[1]).add(selector[1]);
+            break;
+        default: val = $(selector);
+            break;
+    };
+    return sel === 'poster' ? val.attr('src') : val.text();
 };
 
 export default mine;
