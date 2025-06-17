@@ -7,13 +7,16 @@ import { getPage, buildData, testData } from '../module/dataActions.js';
 
 const routes = express.Router();
 
+// Default response to test server readiness
 routes.get('/', (req, res) => {
     return res.send("Hello World!");
 });
 
-routes.get('/:id', async (req, res) => {
-    const data = await getPage(config.src, req.params.id);
-    const result = mine(data, ['img']);
+// To fetch data from source directly and not the DB (only image currently)
+routes.get('/direct/:id', async (req, res) => {
+    const id = req.params.id;
+    const data = await getPage(config.src, id);
+    const result = mine(data, ["poster"]);
     return res.send(result);
 });
 

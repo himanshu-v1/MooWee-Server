@@ -34,5 +34,5 @@ export const replies = {
     username: user.username,
 };
 
-export const dataList = ["img", "title", "year", "rating", "director", "genre"];
-export const detailList = ["plot"];
+export const dataList = ["poster", "title", "year", "rating", "director", "genre", "time"];
+export const detailList = ["plot", "cast"];

@@ -32,4 +32,15 @@ const testData = (data, id) => {
   }
 };
 
-export { getPage, buildData, testData };
+const getWall = async () => {
+  const {client, collection} = await getConnection(config.db.dataCollectionName);
+  try {
+    await client.connect();
+    const data = await collection.find().toArray();
+    return {msg: "Success", data};
+  } finally {
+    client.close();
+  }
+};
+
+export { getPage, buildData, testData, getWall };
