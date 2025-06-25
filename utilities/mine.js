@@ -1,14 +1,12 @@
 import * as cheerio from 'cheerio';
-import { dataList } from '../interfaces/types.js';
 import config from '../config.json' with { type: "json" };
 
-const mine = (markup, iden) => {
+let _isAddon = false;
+
+const mine = (markup, dataList, isAddon) => {
+    _isAddon = isAddon;
     const $ = cheerio.load(markup);
-    if(!iden || !iden.length){
-        return reform($, dataList);
-    } else {
-        return reform($, iden);
-    }
+    return reform($, dataList);
 };
 
 const reform = ($, iden) => {
@@ -33,15 +31,32 @@ const reform = ($, iden) => {
 };
 
 const getElementVal = ($, sel) => {
-    const _$ = $('body');
-    const selector = config.elems[sel];
+    const _selector = _isAddon ? config.addon[sel] : config.elems[sel];
     let val = '';
+
     switch (sel) {
-        case 'plot': val = $(selector[0]).nextUntil(selector[1]).add(selector[1]);
+        case 'plot': 
+            let tempSel = 'grouped-'
+            let temp = $(_selector[0]).nextUntil(_selector[1]).add(_selector[0]);
+            temp.wrapAll(`<div class="${tempSel}"></div>`)
+            val = $(`.${tempSel}`)
             break;
-        default: val = $(selector);
+        default: val = $(_selector);
             break;
     };
+
+    if (_isAddon) {
+        const item = val;
+        console.log("item:::::", item);
+        switch(sel) {
+            case 'plot':
+                return item.html();
+            default:
+                return item.parent().html();
+
+        }
+    }
+
     return sel === 'poster' ? val.attr('src') : val.text();
 };
 

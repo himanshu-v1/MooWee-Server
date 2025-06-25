@@ -5,7 +5,6 @@ const routes = express.Router();
 
 routes.get('/movies', async (req, res) => {
     const result = await getWall();
-    console.log(result.data);
     res.send(result);
 });
 
