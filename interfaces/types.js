@@ -35,4 +35,4 @@ export const replies = {
 };
 
 export const dataList = ["poster", "title", "year", "rating", "director", "genre", "time"];
-export const detailList = ["plot", "cast"];
+export const detailList = ["plot", "cast", "producer", "production"];

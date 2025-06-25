@@ -1,7 +1,7 @@
 import express from 'express';
 import mine from '../utilities/mine.js';
 import config from '../config.json' with { type: "json" };
-import { getPage, buildData, testData } from '../module/dataActions.js';
+import { getPage, buildData, testData, getMovieData } from '../module/dataActions.js';
 // const require = createRequire(import.meta.url);
 // const config = require('../config.json');
 
@@ -15,9 +15,12 @@ routes.get('/', (req, res) => {
 // To fetch data from source directly and not the DB (only image currently)
 routes.get('/direct/:id', async (req, res) => {
     const id = req.params.id;
-    const data = await getPage(config.src, id);
-    const result = mine(data, ["poster"]);
-    return res.send(result);
+    const result = await getMovieData(config.src, id).catch((err) => {
+        if(err.message === 'invalid') {
+            return res.status(204).send('Invalid Id');
+        }
+    });
+    return res.send({msg: 'success', data: result});
 });
 
 routes.get('/build/:id', async (req, res) => {
@@ -33,7 +36,6 @@ routes.get('/test/:id', async (req, res) => {
     const id = req.params.id;
     const data = await getPage(config.src, id);
     const msg = testData(data, id);
-    console.log(msg);
     res.send(msg);
 });
 
