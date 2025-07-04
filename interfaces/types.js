@@ -36,3 +36,16 @@ export const replies = {
 
 export const dataList = ["poster", "title", "year", "rating", "director", "genre", "time"];
 export const detailList = ["plot", "cast", "producer", "production"];
+export const dataTvList = ["poster", "title", "tv_year", "tv_rating", "tv_director", "genre", "episodes"];
+
+export const init = [
+    'The_Prestige_(film)',
+    'Inglourious_Basterds',
+    'Eternal_Sunshine_of_the_Spotless_Mind',
+    'The_Shining_(film)'
+];
+
+export const initTv = [
+    'It%27s_Always_Sunny_in_Philadelphia',
+    'The_Big_Bang_Theory',
+];

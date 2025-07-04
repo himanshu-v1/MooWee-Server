@@ -26,7 +26,16 @@ routes.get('/direct/:id', async (req, res) => {
 routes.get('/build/:id', async (req, res) => {
     const id = req.params.id;
     const data = await getPage(config.src, id);
-    const msg = await buildData(data, id).catch(err => {
+    const msg = await buildData(data, id, 'movies').catch(err => {
+        res.status(500).send({ msg: 'error', err });
+    });
+    res.send(msg);
+});
+
+routes.get('/buildtv/:id', async (req, res) => {
+    const id = req.params.id;
+    const data = await getPage(config.src, id);
+    const msg = await buildData(data, id, 'tv').catch(err => {
         res.status(500).send({ msg: 'error', err });
     });
     res.send(msg);
@@ -36,6 +45,13 @@ routes.get('/test/:id', async (req, res) => {
     const id = req.params.id;
     const data = await getPage(config.src, id);
     const msg = testData(data, id);
+    res.send(msg);
+});
+
+routes.get('/testtv/:id', async (req, res) => {
+    const id = req.params.id;
+    const data = await getPage(config.src, id);
+    const msg = testData(data, id, "tv");
     res.send(msg);
 });
 
