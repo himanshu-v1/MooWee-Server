@@ -22,6 +22,16 @@ const reform = ($, iden) => {
                 break;
             case "time": result[element] = parseInt(val.split(' minutes')[0]);
                 break;
+            case "tv_year": result["year"] = parseInt(val.split(' (')[0].split(', ')[1]);
+                break;
+            case "tv_rating":
+                let rate = parseFloat(val.split('%')[0].substr(-2))/10;
+                result["rating"] = `${rate}\/10`;
+                break;
+            case "tv_director": result["director"] = val;
+                break;
+            case "episodes": result[element] = val.split(' (')[0];
+                break;
             default:
                 result[element] = val;
                 break;
@@ -41,13 +51,16 @@ const getElementVal = ($, sel) => {
             temp.wrapAll(`<div class="${tempSel}"></div>`)
             val = $(`.${tempSel}`)
             break;
+        case 'tv_rating': 
+            const selector = config.elems["rating"]
+            val = $(selector)
+            break;
         default: val = $(_selector);
             break;
     };
 
     if (_isAddon) {
         const item = val;
-        console.log("item:::::", item);
         switch(sel) {
             case 'plot':
                 return item.html();
