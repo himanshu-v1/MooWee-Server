@@ -30,6 +30,10 @@ const reform = ($, iden) => {
                 break;
             case "tv_director": result["director"] = val;
                 break;
+            case "tv_producer": result["producer"] = val;
+                break;
+            case "tv_production": result["production"] = val;
+                break;
             case "episodes": result[element] = val.split(' (')[0];
                 break;
             default:
@@ -48,6 +52,12 @@ const getElementVal = ($, sel) => {
         case 'plot': 
             let tempSel = 'grouped-'
             let temp = $(_selector[0]).nextUntil(_selector[1]).add(_selector[0]);
+
+            if(temp.length === 0) {
+                const _sel = config.addon.plot_bkp;
+                temp = $(_sel[0]).nextUntil(_sel[1]).add(_sel[0]);
+            }
+
             temp.wrapAll(`<div class="${tempSel}"></div>`)
             val = $(`.${tempSel}`)
             break;

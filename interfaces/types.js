@@ -37,6 +37,7 @@ export const replies = {
 export const dataList = ["poster", "title", "year", "rating", "director", "genre", "time"];
 export const detailList = ["plot", "cast", "producer", "production"];
 export const dataTvList = ["poster", "title", "tv_year", "tv_rating", "tv_director", "genre", "episodes"];
+export const detailTvList = ["plot", "cast", "tv_producer", "tv_production"];
 
 export const init = [
     'The_Prestige_(film)',

@@ -1,7 +1,7 @@
 import getConnection from "../utilities/connection.js";
 import mine from "../utilities/mine.js";
 import axios from 'axios';
-import { dataList, detailList, dataTvList } from '../interfaces/types.js';
+import { dataList, detailList, dataTvList, detailTvList } from '../interfaces/types.js';
 import config from '../config.json' with { type: "json" };
 
 const getPage = async (src, id) => {
@@ -69,6 +69,12 @@ const getMovieData = async (url, id) => {
   return result;
 };
 
+const getTvData = async (url, id) => {
+  const data = await getPage(url, id);
+  const result = mine(data, detailTvList, true);
+  return result;
+};
+
 const getTvWall = async () => {
   const {client, collection} = await getConnection(config.db.dataTvCollectionName);
   try {
@@ -80,4 +86,4 @@ const getTvWall = async () => {
   }
 };
 
-export { getPage, buildData, testData, getWall, getMovieData, getTvWall };
+export { getPage, buildData, testData, getWall, getMovieData, getTvWall, getTvData };
