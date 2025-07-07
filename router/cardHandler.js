@@ -1,7 +1,6 @@
 import express from 'express';
-import mine from '../utilities/mine.js';
 import config from '../config.json' with { type: "json" };
-import { getPage, buildData, testData, getMovieData } from '../module/dataActions.js';
+import { getPage, buildData, testData, getMovieData, getTvData } from '../module/dataActions.js';
 // const require = createRequire(import.meta.url);
 // const config = require('../config.json');
 
@@ -12,10 +11,19 @@ routes.get('/', (req, res) => {
     return res.send("Hello World!");
 });
 
-// To fetch data from source directly and not the DB (only image currently)
 routes.get('/direct/:id', async (req, res) => {
     const id = req.params.id;
     const result = await getMovieData(config.src, id).catch((err) => {
+        if(err.message === 'invalid') {
+            return res.status(204).send('Invalid Id');
+        }
+    });
+    return res.send({msg: 'success', data: result});
+});
+
+routes.get('/directtv/:id', async (req, res) => {
+    const id = req.params.id;
+    const result = await getTvData(config.src, id).catch((err) => {
         if(err.message === 'invalid') {
             return res.status(204).send('Invalid Id');
         }
