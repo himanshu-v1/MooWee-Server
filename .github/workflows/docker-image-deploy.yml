@@ -1,0 +1,66 @@
+name: 'Deploy to Cloud Run from Source'
+
+on:
+  push:
+    branches:
+      - 'development'
+
+env:
+  PROJECT_ID: 'blissful-racer-381313'
+  REGION: 'us-central1'
+  SERVICE: 'moowee-server'
+  NODE_ENV: 'production'
+
+jobs:
+  deploy:
+    runs-on: 'ubuntu-latest'
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332' # actions/checkout@v4
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@f112390a2df9932162083945e46d439060d66ec2' # google-github-actions/auth@v2
+        with:
+          workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider' # TODO: replace with your workload identity provider
+
+      - name: 'Configure Docker for GCR'
+        run: |
+          echo "Configuring Docker for GCR..."
+          gcloud auth configure-docker gcr.io --quiet
+          echo "Docker configured for GCR successfully"
+
+      - name: 'Build and Push Docker image'
+        run: |
+          echo "Building docker image..."
+          docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:v1 -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest .
+          echo "Docker image built successfully"
+          echo "Pushing docker image to Google Cloud Registry..."
+          docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:v1
+          docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest
+
+      - name: 'Set Image Name'
+        run: |
+          echo "IMAGE_NAME=gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:$(date +%s)" >> $GITHUB_ENV
+
+      - id: 'deploy'
+        name: 'Deploy Docker image to Cloud Run'
+        run: |
+          echo "Deploying docker image to Cloud Run..."
+          gcloud run deploy ${{ env.SERVICE }} \
+              --image=gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:v1 \
+              --region=${{ env.REGION }} \
+              --platform managed \
+              --allow-unauthenticated \
+              --set-env-vars NODE_ENV=${{ env.NODE_ENV }} \
+              --update-secrets=MONGO_URL=MONGO_URL:latest
+          echo "Docker image deployed to Cloud Run successfully"
+
+      - name: 'Show output'
+        run: |
+          echo ${{ steps.deploy.outputs.url }}
