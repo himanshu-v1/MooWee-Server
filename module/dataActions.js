@@ -3,14 +3,17 @@ import mine from "../utilities/mine.js";
 import axios from 'axios';
 import { dataList, detailList, dataTvList, detailTvList } from '../interfaces/types.js';
 import config from '../config.json' with { type: "json" };
+import { getUserAgentHeader } from '../utilities/setHeaders.js';
 
 const getPage = async (src, id) => {
+  const url = src + id;
+  const headers = getUserAgentHeader();
   try {
-    const response = await axios.get(src+id);
-    const data = await response.data;
-    return data;
-  } catch(err) {
-    throw new Error("invalid");
+    const response = await axios.get(url, headers);
+    return response.data;
+  } catch (err) {
+    // log err.response?.status and err.response?.data for debugging
+    throw new Error(`Invalid. ${err}`);
   }
 };
 

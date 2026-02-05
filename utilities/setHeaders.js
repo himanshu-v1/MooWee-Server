@@ -18,4 +18,13 @@ const setCookieHeader = (res, response) => {
     res.header('set-cookie', `sessionId=${response.insertedId}; Path=/`);
 }
 
-export { setHeaders, setCookieHeader };
+const getUserAgentHeader = () => {
+    return {
+        headers: {
+            'User-Agent': 'MooWee/1.0 (https://github.com/himanshu-v1/MooWee-Server; your-email@example.com)',
+            'Accept-Language': 'en-US,en;q=0.9',
+        },
+    };
+}
+
+export { setHeaders, setCookieHeader, getUserAgentHeader };
