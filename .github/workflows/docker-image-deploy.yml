@@ -25,7 +25,7 @@ jobs:
 
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@f112390a2df9932162083945e46d439060d66ec2' # google-github-actions/auth@v2
+        uses: 'google-github-actions/auth@v2'
         with:
           token_format: 'access_token'
           workload_identity_provider: '${{ vars.WORKLOAD_IDEN_PROVIDER }}'
