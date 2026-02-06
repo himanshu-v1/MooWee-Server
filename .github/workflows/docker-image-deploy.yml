@@ -31,7 +31,9 @@ jobs:
           workload_identity_provider: '${{ vars.WORKLOAD_IDEN_PROVIDER }}'
           service_account: '${{ vars.SERV_ACC }}'
       - run: |
-          echo "no" | gcloud auth login --cred-file="${{ steps.auth.outputs.credentials_file }}"
+          echo '${{ vars.WORKLOAD_IDEN_PROVIDER }}'
+          echo '${{ vars.SERV_ACC }}'
+          echo 'no' | gcloud auth login --cred-file='${{ steps.auth.outputs.credentials_file }}'
           gcloud auth list
       # gcloud auth configure-docker gcr.io --quiet
 
