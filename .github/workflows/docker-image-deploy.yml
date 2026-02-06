@@ -56,8 +56,8 @@ jobs:
           docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:v1 -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest .
           echo "Docker image built successfully"
           echo "Pushing docker image to Google Cloud Registry..."
-          docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:v1
           docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest
+        # docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:v1
 
       - name: 'Set Image Name'
         run: |
