@@ -27,14 +27,22 @@ jobs:
         name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@f112390a2df9932162083945e46d439060d66ec2' # google-github-actions/auth@v2
         with:
+          token_format: 'access_token'
           workload_identity_provider: '${{ secrets.WORKLOAD_IDEN_PROVIDER }}'
           service_account: '${{ secrets.SERV_ACC }}'
 
-      - name: 'Configure Docker for GCR'
-        run: |
-          echo "Configuring Docker for GCR..."
-          gcloud auth configure-docker gcr.io --quiet
-          echo "Docker configured for GCR successfully"
+      # - name: 'Configure Docker for GCR'
+      #   run: |
+      #     echo "Configuring Docker for GCR..."
+      #     gcloud auth configure-docker gcr.io --quiet
+      #     echo "Docker configured for GCR successfully"
+
+      - name: 'Docker Auth'
+        uses: 'docker/login-action@v3'
+        with:
+          registry: 'gcr.io'
+          username: 'oauth2accesstoken'
+          password: '${{ steps.auth.outputs.access_token }}'
 
       - name: 'Build and Push Docker image'
         run: |
