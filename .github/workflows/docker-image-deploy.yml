@@ -26,7 +26,7 @@ jobs:
       - name: 'Install Google CLI'
         id: 'gcloud_x'
         uses: google-github-actions/setup-gcloud@v2
-        run: 'gcloud --version'
+      - run: 'gcloud --version'
 
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
