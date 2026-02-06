@@ -23,11 +23,6 @@ jobs:
       - name: 'Checkout'
         uses: 'actions/checkout@v4'
 
-      - name: 'Install Google CLI'
-        id: 'gcloud_x'
-        uses: google-github-actions/setup-gcloud@v2
-      - run: 'gcloud --version'
-
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
         uses: google-github-actions/auth@v2
@@ -35,11 +30,11 @@ jobs:
           token_format: 'access_token'
           workload_identity_provider: '${{ vars.WORKLOAD_IDEN_PROVIDER }}'
           service_account: '${{ vars.SERV_ACC }}'
-      - run: |
-          echo '${{ vars.WORKLOAD_IDEN_PROVIDER }}'
-          echo '${{ vars.SERV_ACC }}'
-          echo 'no' | gcloud auth login --cred-file='${{ steps.auth.outputs.credentials_file }}'
-          gcloud auth list
+      # - run: |
+      #     echo '${{ vars.WORKLOAD_IDEN_PROVIDER }}'
+      #     echo '${{ vars.SERV_ACC }}'
+      #     echo 'no' | gcloud auth login --cred-file='${{ steps.auth.outputs.credentials_file }}'
+      #     gcloud auth list
       # gcloud auth configure-docker gcr.io --quiet
 
       # - name: 'Configure Docker for GCR'
