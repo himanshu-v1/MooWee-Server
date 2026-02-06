@@ -43,12 +43,12 @@ jobs:
       #     gcloud auth configure-docker gcr.io --quiet
       #     echo "Docker configured for GCR successfully"
 
-      # - name: 'Docker Auth'
-      #   uses: 'docker/login-action@v3'
-      #   with:
-      #     registry: 'gcr.io'
-      #     username: 'oauth2accesstoken'
-      #     password: '${{ steps.auth.outputs.access_token }}'
+      - name: 'Docker Auth'
+        uses: 'docker/login-action@v3'
+        with:
+          registry: 'gcr.io'
+          username: 'oauth2accesstoken'
+          password: '${{ steps.auth.outputs.access_token }}'
 
       - name: 'Build and Push Docker image'
         run: |
