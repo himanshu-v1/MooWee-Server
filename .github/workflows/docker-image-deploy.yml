@@ -21,11 +21,16 @@ jobs:
 
     steps:
       - name: 'Checkout'
-        uses: 'actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332' # actions/checkout@v4
+        uses: 'actions/checkout@v4'
+
+      - name: 'Install Google CLI'
+        id: 'gcloud_x'
+        uses: google-github-actions/setup-gcloud@v2
+        run: 'gcloud --version'
 
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v2'
+        uses: google-github-actions/auth@v2
         with:
           token_format: 'access_token'
           workload_identity_provider: '${{ vars.WORKLOAD_IDEN_PROVIDER }}'
