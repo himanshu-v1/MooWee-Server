@@ -23,22 +23,12 @@ jobs:
       - name: 'Checkout'
         uses: 'actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332' # actions/checkout@v4
 
-      - id: 'auth-default'
-        name: 'auth-default'
-        uses: './'
-        with:
-          project_id: '${{ vars.PROJECT_ID }}'
-          workload_identity_provider: '${{ vars.WIF_PROVIDER_NAME }}'
-
-      - name: 'Show'
-        run: |
-          echo "${{ steps.auth-default.outputs.project_id }}"
-
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@f112390a2df9932162083945e46d439060d66ec2' # google-github-actions/auth@v2
         with:
-          workload_identity_provider: 'projects/439014673656/locations/global/workloadIdentityPools/github/subject/997875308' # TODO: replace with your workload identity provider
+          workload_identity_provider: 'projects/439014673656/locations/global/workloadIdentityPools/github/providers/moowee-server'
+          service_account: 'github-actions-deploy@blissful-racer-381313.iam.gserviceaccount.com'
 
       - name: 'Configure Docker for GCR'
         run: |
