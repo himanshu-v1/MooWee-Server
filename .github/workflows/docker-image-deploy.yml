@@ -83,7 +83,7 @@ jobs:
               --region=${{ env.REGION }} \
               --min-instances 0 \
               --max-instances 1 \
-              --port ${{ env.PORT }}
+              --port ${{ env.PORT }} \
               --platform managed \
               --allow-unauthenticated \
               --set-env-vars NODE_ENV=${{ env.NODE_ENV }} \
