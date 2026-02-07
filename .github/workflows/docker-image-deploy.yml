@@ -68,8 +68,10 @@ jobs:
         run: |
           echo "Deploying docker image to Cloud Run..."
           gcloud run deploy ${{ env.SERVICE }} \
-              --image=gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:v1 \
+              --image=gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest \
               --region=${{ env.REGION }} \
+              --min-instances 0 \
+              --max-instances 1 \
               --platform managed \
               --allow-unauthenticated \
               --set-env-vars NODE_ENV=${{ env.NODE_ENV }} \
