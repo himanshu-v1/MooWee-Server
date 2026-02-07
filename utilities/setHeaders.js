@@ -1,4 +1,4 @@
-const hosts = ['http://localhost:3000'];
+const hosts = ['http://localhost:3000', 'https://moowee-client-439014673656.us-central1.run.app'];
 const exposedHeaders = ['sessionId', 'set-cookie'];
 const allowedHeaders = ['sessionid', 'content-type'];
 
