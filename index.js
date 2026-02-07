@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 // app.use(express.static(__dirname + '/public'));
 // require('./routes')(app);
 app.use((req, res, next) => {
-    setHeaders(res);
+    setHeaders(req, res);
     next();
 });
 app.use('/wall', wallRoutes);
