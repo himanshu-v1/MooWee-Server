@@ -33,8 +33,7 @@ jobs:
 
       - name: 'Copy Config'
         run: |
-          echo '${{ vars.CONFIG_REPO }}'
-          cp /moowee/config.json ./config.json
+          cp moowee/config.json ./config.json
 
 #============================Cloud Authentication============================#
 
