@@ -29,7 +29,7 @@ jobs:
         with:
           repository: '${{ vars.CONFIG_REPO }}'
           token: '${{ secrets.PAT }}'
-          path: 'moowee'
+          path: 'configs'
 
       - name: 'Copy Config'
         run: cp ./moowee/config.json ./config.json
