@@ -21,8 +21,20 @@ jobs:
       id-token: 'write'
 
     steps:
-      - name: 'Checkout'
+
+#============================Add Config File============================#
+
+      - name: 'Checkout Config Repo'
         uses: 'actions/checkout@v4'
+        with:
+          repository: '${{ vars.CONFIG_REPO }}'
+          token: '${{ secrets.PAT }}'
+          path: 'moowee'
+
+      - name: 'Copy Config'
+        run: cp moowee/config.json ./config.json
+
+#============================Cloud Authentication============================#
 
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
@@ -32,12 +44,16 @@ jobs:
           workload_identity_provider: '${{ vars.WORKLOAD_IDEN_PROVIDER }}'
           service_account: '${{ vars.SERV_ACC }}'
 
+#============================Docker Auth with Cloud Run============================#
+
       - name: 'Docker Auth'
         uses: 'docker/login-action@v3'
         with:
           registry: 'gcr.io'
           username: 'oauth2accesstoken'
           password: '${{ steps.auth.outputs.access_token }}'
+
+#============================Build & Push Docker Image to Cloud Run============================#
 
       - name: 'Build and Push Docker image'
         run: |
@@ -48,9 +64,11 @@ jobs:
           docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest
         # docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:v1
 
-      - name: 'Set Image Name'
-        run: |
-          echo "IMAGE_NAME=gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:$(date +%s)" >> $GITHUB_ENV
+      # - name: 'Set Image Name'
+      #   run: |
+      #     echo "IMAGE_NAME=gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:$(date +%s)" >> $GITHUB_ENV
+
+#============================Deployment============================#
 
       - id: 'deploy'
         name: 'Deploy Docker image to Cloud Run'
@@ -67,6 +85,19 @@ jobs:
               --set-env-vars NODE_ENV=${{ env.NODE_ENV }} \
               --update-secrets=MONGO_URL=MONGO_URL:latest
           echo "Docker image deployed to Cloud Run successfully"
+
+#============================Revisions Cleanup============================#
+      
+      - name: 'Cleanup Old Revisions'
+        run: |
+          chmod +x .github/workflows/cleanup-cloud-run-revisions.sh
+          ./.github/workflows/cleanup-cloud-run-revisions.sh
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID }}
+          REGION: ${{ env.REGION }}
+          SERVICES: "moowee-server"
+
+#============================Finish============================#
 
       - name: 'Show output'
         run: |
