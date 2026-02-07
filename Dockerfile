@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:lts-alpine
 WORKDIR /app
 
 # Copy dependency files and install production dependencies only
