@@ -32,7 +32,7 @@ jobs:
           path: 'moowee'
 
       - name: 'Copy Config'
-        run: cp ./config.json ./config.json
+        run: cp config.json ./config.json
 
 #============================Cloud Authentication============================#
 
