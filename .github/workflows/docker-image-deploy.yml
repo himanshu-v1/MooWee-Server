@@ -10,6 +10,7 @@ env:
   REGION: 'us-central1'
   SERVICE: 'moowee-server'
   NODE_ENV: 'production'
+  PORT: '4000'
 
 jobs:
   deploy:
@@ -30,18 +31,6 @@ jobs:
           token_format: 'access_token'
           workload_identity_provider: '${{ vars.WORKLOAD_IDEN_PROVIDER }}'
           service_account: '${{ vars.SERV_ACC }}'
-      # - run: |
-      #     echo '${{ vars.WORKLOAD_IDEN_PROVIDER }}'
-      #     echo '${{ vars.SERV_ACC }}'
-      #     echo 'no' | gcloud auth login --cred-file='${{ steps.auth.outputs.credentials_file }}'
-      #     gcloud auth list
-      # gcloud auth configure-docker gcr.io --quiet
-
-      # - name: 'Configure Docker for GCR'
-      #   run: |
-      #     echo "Configuring Docker for GCR..."
-      #     gcloud auth configure-docker gcr.io --quiet
-      #     echo "Docker configured for GCR successfully"
 
       - name: 'Docker Auth'
         uses: 'docker/login-action@v3'
@@ -72,6 +61,7 @@ jobs:
               --region=${{ env.REGION }} \
               --min-instances 0 \
               --max-instances 1 \
+              --port ${{ env.PORT }}
               --platform managed \
               --allow-unauthenticated \
               --set-env-vars NODE_ENV=${{ env.NODE_ENV }} \
